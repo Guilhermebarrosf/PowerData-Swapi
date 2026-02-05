@@ -114,15 +114,6 @@ pytest -q
 
 ---
 
-## Deploy no GCP (Resumo)
-
-### Cloud Function
-```bash
-gcloud functions deploy swapi   --gen2   --runtime=python311   --region=us-central1   --source=.   --entry-point=swapi   --trigger-http   --allow-unauthenticated
-```
-
-Após o deploy, utilize a URL gerada para configurar o API Gateway.
-
 ### API Gateway
 - Configurado via `openapi.yaml`
 - Autenticação simples usando API Key (`x-api-key`)
