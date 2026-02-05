@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: PowerOfData SWAPI Proxy
+  version: 1.0.0
+  description: API simples que consome a SWAPI e oferece filtros básicos.
+
+paths:
+  /swapi:
+    get:
+      summary: Consulta dados da SWAPI (people, films, planets, starships, vehicles)
+      operationId: getSwapi
+      security:
+        - api_key: []
+      parameters:
+        - name: resource
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [people, films, planets, starships, vehicles]
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Ex: name,height"
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Ex: name ou -name"
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: related
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Ex: characters (para films?id=1)"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Parâmetros inválidos
+        "404":
+          description: Não encontrado
+        "503":
+          description: SWAPI indisponível
+
+      x-google-backend:
+        address: https://ReGionId.cloudfunctions.net/swapi
+        protocol: h2
+
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: x-api-key
